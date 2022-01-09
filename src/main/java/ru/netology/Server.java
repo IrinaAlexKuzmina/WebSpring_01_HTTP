@@ -18,12 +18,21 @@ public class Server {
 
     private ServerSocket serverSocket;
 
-    public final List<String> validPaths = List.of(SOURCE_1, SOURCE_2, SOURCE_3, SOURCE_4, SOURCE_5, SOURCE_6, SOURCE_7,
-            SOURCE_8, SOURCE_9, SOURCE_10, SOURCE_11);
+    public final List<String> validPaths = List.of("/index.html", "/spring.svg", "/spring.png", "/resources.html",
+            "/styles.css", "/app.js", "/links.html", "/forms.html", "/classic.html", "/events.html", "/events.js");
 
     public Server(int port) {
         try {
             this.serverSocket = new ServerSocket(port, NUMBER_OF_POOLS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Server() {
+        try {
+            this.serverSocket = new ServerSocket();
+            serverSocket.bind(serverSocket.getLocalSocketAddress(), NUMBER_OF_POOLS);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -52,7 +61,7 @@ public class Server {
 
     private boolean checkSpecialCases(String mimeType, Path filePath, String path, BufferedOutputStream out)
             throws IOException {
-        if (path.equals(SOURCE_9)) {
+        if (path.equals("/classic.html")) {
             final var template = Files.readString(filePath);
             final var content = template.replace(
                     "{time}",
@@ -77,7 +86,7 @@ public class Server {
         final ExecutorService customerPool = Executors.newFixedThreadPool(NUMBER_OF_POOLS);
 
         for (int i = 0; i < NUMBER_OF_POOLS; i++) {
-            customerPool.submit(this::runOneSocket);
+            customerPool.execute(this::runOneSocket);
         }
     }
 
