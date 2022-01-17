@@ -1,6 +1,6 @@
 package ru.netology;
 
-import static ru.netology.Constants.PORT;
+import static ru.netology.utils.Constants.PORT;
 
 public class Main {
     public static void main(String[] args) {

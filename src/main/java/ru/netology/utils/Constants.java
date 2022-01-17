@@ -1,4 +1,4 @@
-package ru.netology;
+package ru.netology.utils;
 
 public final class Constants {
 
